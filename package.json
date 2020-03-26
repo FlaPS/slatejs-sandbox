@@ -1,0 +1,35 @@
+{
+  "name": "slatejs-sandbox",
+  "version": "1.0.0",
+  "description": "https://slatejs.org - a framework for building rich text editors.",
+  "keywords": [
+    "editor",
+    "draft.js",
+    "draft-js",
+    "draftjs",
+    "slate.js"
+  ],
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "dependencies": {
+    "@material-ui/core": "4.9.7",
+    "@material-ui/icons": "4.9.1",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "slate": "0.57.1",
+    "slate-react": "0.57.1"
+  },
+  "devDependencies": {
+    "react-scripts": "^3.1.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
