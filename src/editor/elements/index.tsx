@@ -3,20 +3,16 @@ import {RenderElementProps, RenderLeafProps} from 'slate-react'
 import LinkElementView from './LinkElementView'
 import DefaultElementView from './DefaultElementView'
 import LeafView from './LeafView'
+import {WorkoutEditor} from '../data'
 
-export const renderWorkoutElement = ({ children, element }: RenderElementProps) => {
-    switch (element.type) {
-        case 'link':
-            return  <LinkElementView href={element.url}>
+export const renderWorkoutElement = ({ children, element }: RenderElementProps) =>
+    WorkoutEditor.isLinkNode(element)
+        ?   <LinkElementView href={element.url}>
                         {children}
-                    </LinkElementView>
-
-        default:
-            return  <DefaultElementView>
+            </LinkElementView>
+        :   <DefaultElementView>
                         {children}
-                    </DefaultElementView>
-    }
-}
+            </DefaultElementView>
 
 
 export const renderWorkoutLeaf = (props: RenderLeafProps) =>

@@ -1,5 +1,5 @@
 import React from 'react'
-import {ClickAwayListener, Input} from '@material-ui/core'
+import {ClickAwayListener, Input, withStyles} from '@material-ui/core'
 import {Close} from '@material-ui/icons'
 import {useSlate} from 'slate-react'
 import {Location} from 'slate'
@@ -11,7 +11,7 @@ type LinkStateViewProps = {
     onClose: () => void
 }
 
-export const LinkStateView = ({location, onClose}: LinkStateViewProps) => {
+const LinkStateView = ({location, onClose}: LinkStateViewProps) => {
 
     const [value, setValue] = React.useState('')
     const styles = useToolbarStyles()
@@ -60,5 +60,6 @@ export const LinkStateView = ({location, onClose}: LinkStateViewProps) => {
                     />
                 </form>
             </ClickAwayListener>
-
 }
+
+export default LinkStateView

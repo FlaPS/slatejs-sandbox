@@ -2,9 +2,9 @@ import React, {useEffect} from 'react'
 import { Popper} from '@material-ui/core'
 import {useSlate} from 'slate-react'
 import {Location} from 'slate'
-import useStyles from './useToolbarStyles'
-import {FormatStateView} from './FormatStateView'
-import {LinkStateView} from './LinkStateView'
+import useToolbarStyles from './useToolbarStyles'
+import FormatStateView from './FormatStateView'
+import LinkStateView from './LinkStateView'
 import {WorkoutEditor} from '../data'
 
 const getDOMSelectionRect = () =>
@@ -13,15 +13,29 @@ const getDOMSelectionRect = () =>
       .getRangeAt(0)
       .getBoundingClientRect()
 
+
 const reactsAreEquals = (rect1: DOMRect, rect2: DOMRect) =>
+    rect1 &&
+    rect2 &&
     rect1.x === rect2.x &&
     rect1.y === rect2.y &&
     rect1.width === rect2.width &&
     rect1.height === rect2.height
 
-export const Toolbar = () => {
 
-  const styles = useStyles()
+const createVirtualReferenceFromRect = (rect: DOMRect | undefined) =>
+    rect
+        ? {
+            clientWidth: rect.width,
+            clientHeight: rect.height,
+            getBoundingClientRect: () => rect,
+        }
+        : null
+
+
+const Toolbar = () => {
+
+  const styles = useToolbarStyles()
   const editor = useSlate()
 
   const [linkLocation, setLinkLocation] = React.useState(undefined as Location | undefined)
@@ -30,7 +44,6 @@ export const Toolbar = () => {
   const selection = editor.selection ? editor.selection : undefined
 
   useEffect(() => {
-
         // link is in edit mode
         if (linkLocation)
           return
@@ -38,7 +51,7 @@ export const Toolbar = () => {
         const selectionIsEmpty = WorkoutEditor.isSelectionEmpty(editor)
 
         // anchor defined - with no selection
-        if (selectionIsEmpty ) {
+        if (selectionIsEmpty) {
           if (anchorRect)
             setAnchorRect(undefined)
           return
@@ -56,13 +69,7 @@ export const Toolbar = () => {
   useEffect( () => setLinkLocation(undefined), [anchorRect])
 
   const anchorEl = React.useMemo( () =>
-        anchorRect
-          ? {
-            clientWidth: anchorRect.width,
-            clientHeight: anchorRect.height,
-            getBoundingClientRect: () => anchorRect,
-          }
-          : null,
+          createVirtualReferenceFromRect(anchorRect),
       [anchorRect]
   )
 
@@ -93,3 +100,4 @@ export const Toolbar = () => {
   )
 }
 
+export default Toolbar

@@ -1,6 +1,12 @@
-import {Editor, Location, Range, Text, Transforms} from 'slate'
-import {LeafFormat} from './types'
+import {Editor, Location, Node, Range, Text, Transforms} from 'slate'
 import {ReactEditor} from 'slate-react'
+import {LeafFormat, WorkoutLinkElement} from './types'
+
+const isSelectionEmpty = (editor: ReactEditor) =>
+    !editor.selection ||
+    !ReactEditor.isFocused(editor) ||
+    Range.isCollapsed(editor.selection) ||
+    Editor.string(editor, editor.selection) === ''
 
 const isFormatActive = (editor: Editor, format: LeafFormat) => {
     const [match] = Editor.nodes(editor, {
@@ -17,52 +23,34 @@ const toggleFormat = (editor: Editor, format: LeafFormat) =>
         { match: Text.isText, split: true },
     )
 
-const unwrapLink = (editor: Editor, selection?: Location) =>
-    Transforms.unwrapNodes(editor,
-        {
-            match: n => n.type === 'link',
-            at: selection,
-        }
-    )
+const isLinkNode = (n: Node) =>
+    n.type === 'link'
 
-const wrapLink = (editor: Editor, url: string, selection?: Location) => {
-    if (isLinkActive(editor, selection))
-        unwrapLink(editor, selection)
+const isLinkActive = (editor: Editor, at?: Location) => {
+    const [link] = Editor.nodes( editor, { match: isLinkNode, at })
+    return !!link
+}
 
-    const link = {
+const unwrapLink = (editor: Editor, at?: Location) =>
+    Transforms.unwrapNodes(editor, { match: isLinkNode, at })
+
+const wrapLink = (editor: Editor, url: string, at?: Location) => {
+    if (isLinkActive(editor, at))
+        unwrapLink(editor, at)
+
+    const link: WorkoutLinkElement = {
         type: 'link',
         url,
         children: [],
     }
 
-    Transforms.wrapNodes(editor, link,
-        {
-            split: true,
-            at: selection,
-        }
-    )
+    Transforms.wrapNodes(editor, link, { split: true, at })
     Transforms.collapse(editor, { edge: 'end' })
 }
 
 const insertLink = (editor: Editor, url: string, location: Location | null | undefined) =>
     location && wrapLink(editor, url, location)
 
-const isLinkActive = (editor: Editor, selection?: Location) => {
-    const [link] = Editor.nodes(
-        editor,
-        {
-            match: n => n.type === 'link',
-            at: selection,
-        }
-    )
-    return !!link
-}
-
-const isSelectionEmpty = (editor: ReactEditor) =>
-    !editor.selection ||
-    !ReactEditor.isFocused(editor) ||
-    Range.isCollapsed(editor.selection) ||
-    Editor.string(editor, editor.selection) === ''
 
 export default {
     ...Editor,
@@ -71,6 +59,7 @@ export default {
     unwrapLink,
     wrapLink,
     isFormatActive,
+    isLinkNode,
     toggleFormat,
     insertLink,
 }

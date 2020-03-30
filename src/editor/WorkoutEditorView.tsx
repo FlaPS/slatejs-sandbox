@@ -1,7 +1,7 @@
 import React from 'react'
 import { createEditor } from 'slate'
 import { withReact, Slate } from 'slate-react'
-import { Toolbar } from './toolbar/Toolbar'
+import { Toolbar } from './toolbar/'
 import {WorkoutEditable} from './WorkoutEditable'
 import {withLinksEditor, WorkoutNode} from './data'
 

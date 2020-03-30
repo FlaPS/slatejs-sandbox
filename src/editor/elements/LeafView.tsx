@@ -10,17 +10,17 @@ export default React.forwardRef(
       ref: React.Ref<HTMLElement>
     ) => {
 
-    if (leaf.bold)
-      children = <strong>{children}</strong>
+        if (leaf.bold)
+          children = <strong>{children}</strong>
 
-    if (leaf.italic)
-      children = <em>{children}</em>
+        if (leaf.italic)
+          children = <em>{children}</em>
 
-    if (leaf.underlined)
-      children = <u>{children}</u>
-  
-    return  <Typography {...attributes}  ref={ref} component={'span'}>
-                {children}
-            </Typography>
+        if (leaf.underlined)
+          children = <u>{children}</u>
+
+        return  <Typography {...attributes}  ref={ref} component={'span'}>
+                    {children}
+                </Typography>
   }
 )

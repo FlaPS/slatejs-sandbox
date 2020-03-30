@@ -6,7 +6,7 @@ import {useTheme} from '@material-ui/core'
 import {LeafFormat, WorkoutEditor} from '../data/'
 import useToolbarStyles from './useToolbarStyles'
 
-export const FormatStateView = ({onLink}: {onLink: () => void}) => {
+const FormatStateView = ({onLink}: {onLink: () => void}) => {
     const editor = useSlate()
     const theme = useTheme()
     const styles = useToolbarStyles()
@@ -66,3 +66,5 @@ export const FormatStateView = ({onLink}: {onLink: () => void}) => {
                 </ToggleButton>
             </React.Fragment>
 }
+
+export default FormatStateView
